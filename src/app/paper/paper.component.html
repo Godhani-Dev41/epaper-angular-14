@@ -1,0 +1,43 @@
+<div>
+  <div  class="news-container" *ngIf="hasLoaded && isAuthorized">
+    <div class="news-header">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 text-center logo"></div>
+          <button (click)="download()">Download</button>
+          <button (click)="pdfDownload()">Capture page</button>
+        </div>
+      </div>
+      <div class="news-subheader"> , {{today | date:'fullDate'}}</div>
+    </div>
+    <div  *ngFor="let post of paper.posts; index as i;" [id]="post?.uuid" >
+      <div *ngIf="i > -1" class="article">
+        <h1 class="lead title">{{post?.title}}</h1>
+        <div *ngIf="post?.media[0]?.url" class="border border-dark" [ngStyle]="{
+            'height':'400px',
+            'background-color':'#000000',
+            'background-image':'url('+post?.media[0]?.url+')',
+            'background-repeat':'no-repeat',
+            'background-position':'center center',
+            'background-size':'contain'}">&nbsp;</div>
+        <p class="author font-weight-bold" *ngIf="post.author?.length > 1">
+          By {{post.author}} | <span class="text-black-70">{{post.source?.name}}</span>
+        </p>
+        <div class="twoColumns">
+          <div [innerHTML]="post?.summary?.sentences[0]" class="text"></div>
+        </div>
+        <footer class="pt-2 pb-2">
+          <div class="pull-left lead"><a href="{{post?.source?.url}}">Full article</a></div>
+          <div class="lead"><b>A{{i}}</b></div>
+        </footer>
+      </div>
+    </div>
+    <div class="footer p-2 mt-5"><img src="assets/img/epaperweekly_powered_einkpads.png" class="w-auto"></div>
+  </div>
+  <div class="text-center m-4" *ngIf="hasLoaded && !isAuthorized">
+    <div class="alert alert-danger" role="alert" >
+      <h4 class="alert-heading">You are not authorized to view this content</h4>
+      <p class="mb-0">Please contact our support team at epaperweekly.com.</p>
+    </div>
+  </div>
+</div>
